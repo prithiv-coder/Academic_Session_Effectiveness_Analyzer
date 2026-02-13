@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Timetable</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            text-align: center;
+        }
+
+        .header {
+            background: #e9ecef;
+            padding: 20px;
+        }
+
+        .date-title {
+            margin: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background-color: #4f6d95;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            height: 50px;
+        }
+
+        .back-btn {
+            margin-top: 15px;
+            padding: 8px 15px;
+            background: #4f6d95;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            background: #3b5475;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>DAILY TIMETABLE</h1>
+</div>
+
+<div class="date-title" id="selectedDate"></div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Subject</th>
+        </tr>
+    </thead>
+    <tbody id="timetableBody"></tbody>
+</table>
+
+<button class="back-btn" onclick="goBack()">Back to Calendar</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            year: params.get("year"),
+            month: params.get("month"),
+            date: params.get("date")
+        };
+    }
+
+    const data = getQueryParams();
+
+    const months = [
+        "January","February","March","April","May","June",
+        "July","August","September","October","November","December"
+    ];
+
+    const dateTitle = document.getElementById("selectedDate");
+
+    if (data.year && data.month && data.date) {
+        dateTitle.innerText =
+            data.date + " " + months[parseInt(data.month)] + " " + data.year;
+    } else {
+        dateTitle.innerText = "Selected Date";
+    }
+
+    const timetableBody = document.getElementById("timetableBody");
+
+    const periods = [
+        "9:00 AM - 10:00 AM",
+        "10:00 AM - 11:00 AM",
+        "11:00 AM - 12:00 PM",
+        "LUNCH BREAK",
+        "1:00 PM - 2:00 PM",
+        "2:00 PM - 3:00 PM"
+    ];
+
+    const subjects = [
+        "Mathematics",
+        "Physics",
+        "Chemistry",
+        "English",
+        "Biology"
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    shuffle(subjects);
+
+    let subjectIndex = 0;
+
+    periods.forEach(function(time) {
+        const row = document.createElement("tr");
+
+        if (time === "LUNCH BREAK") {
+            row.innerHTML = `
+                <td colspan="2" style="background:#ffeeba; font-weight:bold;">
+                    🍴 ${time}
+                </td>
+            `;
+        } else {
+            const subject = subjects[subjectIndex % subjects.length];
+
+            row.innerHTML = `
+                <td>${time}</td>
+                <td style="cursor:pointer; color:#4f6d95; font-weight:bold;"
+                    onclick="goToFeedback('${subject}')">
+                    ${subject}
+                </td>
+            `;
+
+            subjectIndex++;
+        }
+
+        timetableBody.appendChild(row);
+    });
+
+});
+
+function goBack() {
+    window.history.back();
+}
+
+function goToFeedback(subject) {
+    window.location.href = "feedback.html?subject=" + encodeURIComponent(subject);
+}
+</script>
+
+</body>
+</html>

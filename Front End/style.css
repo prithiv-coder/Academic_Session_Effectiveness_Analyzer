@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Heading */
+h1 {
+    margin-top: 30px;
+    font-size: 28px;
+}
+
+h2 {
+    margin-top: 10px;
+    color: #4f6d95;
+}
+
+/* Main Container */
+.container {
+    background: white;
+    padding: 25px;
+    margin: 30px auto;
+    width: 380px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    text-align: left;
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+/* Dropdown */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Button */
+button {
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    background: #4f6d95;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #3b5473;
+}
+
+/* Result Text */
+#result {
+    margin-top: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Chart */
+canvas {
+    display: block;
+    margin: 40px auto;
+    max-width: 500px;
+}
+
+/* ⭐ Star Rating */
+.stars {
+    font-size: 30px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.star {
+    color: #ccc;
+    padding: 3px;
+    transition: 0.2s;
+}
+
+.star:hover {
+    transform: scale(1.2);
+}
+
+.star.selected {
+    color: gold;
+}

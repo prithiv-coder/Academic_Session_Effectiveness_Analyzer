@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Academic Calendar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            text-align: center;
+        }
+
+        .header {
+            background: #e9ecef;
+            padding: 30px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        .controls {
+            margin: 20px;
+        }
+
+        select {
+            padding: 8px;
+            margin: 5px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background-color: #4f6d95;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            height: 80px;
+            vertical-align: top;
+            padding: 5px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        td:hover {
+            background-color: #f0f8ff;
+        }
+
+        .holiday {
+            background-color: #ffe6e6;
+            color: red;
+            font-weight: bold;
+        }
+
+        .date-number {
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>ACADEMIC CALENDAR</h1>
+</div>
+
+<div class="controls">
+    <select id="yearSelect"></select>
+    <select id="monthSelect"></select>
+</div>
+
+<table id="calendar">
+    <thead>
+        <tr>
+            <th>Sunday</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<script>
+const yearSelect = document.getElementById("yearSelect");
+const monthSelect = document.getElementById("monthSelect");
+const calendarBody = document.querySelector("#calendar tbody");
+
+const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+];
+
+// Populate Years
+for(let y = 2024; y <= 2035; y++){
+    let option = document.createElement("option");
+    option.value = y;
+    option.textContent = y;
+    yearSelect.appendChild(option);
+}
+
+// Populate Months
+months.forEach((month, index) => {
+    let option = document.createElement("option");
+    option.value = index;
+    option.textContent = month;
+    monthSelect.appendChild(option);
+});
+
+yearSelect.value = new Date().getFullYear();
+monthSelect.value = new Date().getMonth();
+
+function generateCalendar() {
+
+    calendarBody.innerHTML = "";
+
+    const year = parseInt(yearSelect.value);
+    const month = parseInt(monthSelect.value);
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    let date = 1;
+
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+            let cell = document.createElement("td");
+
+            if (i === 0 && j < firstDay) {
+                cell.textContent = "";
+            } else if (date > daysInMonth) {
+                break;
+            } else {
+                cell.innerHTML = `<div class="date-number">${date}</div>`;
+
+                if (j === 0) {
+                    cell.classList.add("holiday");
+                    cell.innerHTML += "<div>Holiday</div>";
+                } else {
+                    let currentDate = date;
+                    cell.onclick = function() {
+                        window.location.href =
+                        "day.html?year=" + year +
+                        "&month=" + month +
+                        "&date=" + currentDate;
+                    };
+
+                }
+
+                date++;
+            }
+
+            row.appendChild(cell);
+        }
+
+        calendarBody.appendChild(row);
+    }
+}
+
+yearSelect.addEventListener("change", generateCalendar);
+monthSelect.addEventListener("change", generateCalendar);
+
+generateCalendar();
+</script>
+
+</body>
+</html>
